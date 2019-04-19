@@ -1,0 +1,50 @@
+<?php
+
+use PHPUnit\Framework\TestCase;
+
+class ExpressionTest extends TestCase{
+
+/**  @test **/
+public function it_can_find()
+{
+    $regex = Expression::make()->find("www");
+
+    $this->assertRegExp($regex, "www");
+
+        $regex = Expression::make()->then("www");
+
+        $this->assertRegExp($regex, "www");
+
+}
+/**  @test **/
+public function it_can_match_anything()
+{
+        $regex = Expression::make()->anything("www");
+
+        $this->assertRegExp($regex, "www");
+
+        $regex = Expression::make()->anything("");
+
+        $this->assertRegExp($regex, "www");
+}
+
+/**  @test **/
+public function it_allows_maybe()
+{
+        $regex = Expression::make()->maybe("w");
+
+        $this->assertRegExp($regex, "w");
+}
+
+/**  @test **/
+public function it_allows_chaining()
+{
+        $regex = Expression::make()->find("www")->maybe(".")->then("example");
+
+        $this->assertTrue($regex->test("www.example"));
+
+        $regex = Expression::make()->find("www")->maybe(".")->then("example");
+
+        $this->assertFalse($regex->test("wwwXexample"));
+}
+}
