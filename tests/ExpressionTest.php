@@ -47,4 +47,21 @@ public function it_allows_chaining()
 
         $this->assertFalse($regex->test("wwwXexample"));
 }
+
+/**  @test **/
+public function it_can_exclude_values()
+{
+    $regex = Expression::make()
+    ->find("foo")
+    ->anythingBut("bar")
+    ->then('biz');
+
+    $this->assertTrue($regex->test("foobiz"));
+
+    $this->assertFalse($regex->test("foobi"));
+
+    $this->assertTrue($regex->test("foo123biz"));
+
+    $this->assertFalse($regex->test("foobarbiz"));
+}
 }
